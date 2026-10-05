@@ -1,0 +1,12 @@
+node_modules
+.next
+.vercel
+next-env.d.ts
+*.tsbuildinfo
+.env*.local
+.env*
+
+# Herramientas locales de agentes instaladas por integraciones
+.agents
+.claude
+skills-lock.json
