@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { REGISTRO_URL } from "@/lib/evento";
 
-const TEXTO = `¡Ya tengo mi entrada Premium para el #DevFest 2026 Tacna! 🎉 Nos vemos el 21 de marzo en la UTP. Regístrate tú también en ${REGISTRO_URL} #GDGTacna #DevFestTacna`;
+const TEXTO = `¡Ya tengo mi entrada Premium para el #DevFest 2026 Tacna! 🎉 Nos vemos el 21 de noviembre en la UTP. Regístrate tú también en ${REGISTRO_URL} #GDGTacna #DevFestTacna`;
 
 type Props = { url: string; imagen: string; nombre: string };
 

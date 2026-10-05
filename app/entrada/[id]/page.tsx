@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: PageProps<"/entrada/[id]">): 
   const asistente = await buscarAsistente(id);
   if (!asistente) return {};
   const title = `${asistente.nombre} · DevFest 2026 Tacna`;
-  const description = "¡Ya tengo mi entrada Premium para el DevFest 2026 Tacna! Sáb 21 de marzo en la UTP. Regístrate en devfest.gdgtacna.com";
+  const description = "¡Ya tengo mi entrada Premium para el DevFest 2026 Tacna! Sáb 21 de noviembre en la UTP. Regístrate en devfest.gdgtacna.com";
   return {
     title,
     description,
@@ -45,7 +45,7 @@ export default async function EntradaPage({ params }: PageProps<"/entrada/[id]">
 
       <section className="registro">
         <h2>¿Aún no tienes tu entrada?</h2>
-        <p>Sé parte del DevFest 2026 Tacna: charlas, talleres y comunidad tech el 21 de marzo.</p>
+        <p>Sé parte del DevFest 2026 Tacna: charlas, talleres y comunidad tech el 21 de noviembre.</p>
         <a className="btn btn-registro" href={REGISTRO_URL}>Regístrate al DevFest Tacna</a>
       </section>
     </main>

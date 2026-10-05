@@ -30,7 +30,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           </div>
           <div style={{ display: "flex", fontSize: 34, color: "#111", marginTop: 32 }}>{nombre}</div>
           <div style={{ display: "flex", fontSize: 24, color: "#5f5a48", marginTop: 10 }}>
-            Sáb 21 de marzo · UTP Tacna
+            Sáb 21 de noviembre · UTP Tacna
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", paddingRight: 56 }}>
