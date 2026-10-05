@@ -18,7 +18,7 @@ El acceso es con la contraseña de la variable `ADMIN_PASSWORD`. Para cambiarla:
 ```bash
 vercel env rm ADMIN_PASSWORD production
 vercel env add ADMIN_PASSWORD production --sensitive
-vercel deploy --prod
+vercel deploy --prod   # o haz cualquier push a main
 ```
 
 Cambiarla cierra todas las sesiones abiertas.
@@ -43,7 +43,7 @@ Las claves válidas están en la variable `API_KEYS`, separadas por coma. Lo ide
 ```bash
 vercel env rm API_KEYS production
 vercel env add API_KEYS production --sensitive   # p. ej. dft_clave1,dft_clave2
-vercel deploy --prod
+vercel deploy --prod   # o haz cualquier push a main
 ```
 
 Generar una clave nueva: `echo "dft_$(openssl rand -hex 24)"`.
@@ -124,6 +124,17 @@ node --env-file=.env.local scripts/db-setup.mjs
 ```
 
 **Ojo:** en local se usa la misma base de datos que producción.
+
+## Publicar cambios
+
+El proyecto de Vercel está conectado a este repo:
+
+- **Push a `main`** → se publica en producción (https://entradas.gdgtacna.com).
+- **Pull request** → Vercel crea una URL de prueba y la comenta en el PR.
+
+Las URLs de prueba usan la **misma base de datos** que producción, y no tienen `ADMIN_PASSWORD` ni `API_KEYS` (el admin y la API no funcionan ahí). Úsalas para revisar cambios visuales, no para registrar asistentes.
+
+Las variables de entorno se cambian en Vercel (`vercel env ...` o el dashboard), nunca en el repo. Después de cambiarlas hay que volver a publicar (`vercel deploy --prod` o un push a `main`).
 
 ## Desarrollo
 
