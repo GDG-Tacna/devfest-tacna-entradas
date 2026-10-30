@@ -12,7 +12,8 @@ export async function GET(_req: Request, { params }: RouteContext<"/entrada/[id]
   const asistente = await buscarAsistente(id);
   if (!asistente) notFound();
 
-  const { base, font } = await cargarAssets();
+  const { bases, font } = await cargarAssets();
+  const base = bases[asistente.tipo ?? "premium"];
   return new ImageResponse(<Ticket nombre={asistente.nombre} base={base} />, {
     width: TICKET_W,
     height: TICKET_H,

@@ -13,7 +13,7 @@ export function especificacion() {
       title: "API de asistentes · DevFest 2026 Tacna",
       version: "1.0.0",
       description: [
-        "API de solo lectura con los asistentes de la **Experiencia Premium** del DevFest 2026 Tacna y los links de sus entradas.",
+        "API de solo lectura con los asistentes de las experiencias **Premium** y **Pro** (con certificado) del DevFest 2026 Tacna y los links de sus entradas.",
         "",
         "**Autenticación:** envía tu API key en el header `Authorization: Bearer <API_KEY>`. Pulsa **Authorize** para probar los endpoints desde esta página.",
         "",
@@ -23,7 +23,7 @@ export function especificacion() {
     },
     servers: [{ url: `${SITE_URL}/api/v1` }],
     security: [{ apiKey: [] }],
-    tags: [{ name: "Asistentes", description: "Personas registradas en la Experiencia Premium y sus entradas." }],
+    tags: [{ name: "Asistentes", description: "Personas registradas en Experiencia Premium o Pro y sus entradas." }],
     paths: {
       "/asistentes": {
         get: {
@@ -51,6 +51,12 @@ export function especificacion() {
               description:
                 "Solo los registrados **después** de esta fecha (ISO 8601, p. ej. `2026-10-01T00:00:00Z`). Útil para sincronizar solo los nuevos.",
               schema: { type: "string", format: "date-time" },
+            },
+            {
+              name: "tipo",
+              in: "query",
+              description: "Filtra por tipo de entrada (`premium` o `pro`).",
+              schema: { type: "string", enum: ["premium", "pro"] },
             },
           ],
           responses: {
@@ -122,10 +128,21 @@ export function especificacion() {
       schemas: {
         Asistente: {
           type: "object",
-          required: ["id", "nombre", "email", "telefono", "registrado_en", "entrada_url", "imagen_url"],
+          required: ["id", "nombre", "tipo", "incluye_certificado", "email", "telefono", "registrado_en", "entrada_url", "imagen_url"],
           properties: {
             id: { type: "string", example: "ana-torres-quispe-a1b2c3" },
             nombre: { type: "string", example: "Ana Torres Quispe" },
+            tipo: {
+              type: "string",
+              enum: ["premium", "pro"],
+              description: "Tipo de entrada (`pro` incluye certificado).",
+              example: "pro",
+            },
+            incluye_certificado: {
+              type: "boolean",
+              description: "`true` cuando la entrada incluye certificado (`tipo === 'pro'`).",
+              example: true,
+            },
             email: { type: ["string", "null"], format: "email", example: "ana@example.com" },
             telefono: { type: ["string", "null"], example: "987654321" },
             registrado_en: { type: "string", format: "date-time", example: "2026-10-05T02:43:18.995Z" },

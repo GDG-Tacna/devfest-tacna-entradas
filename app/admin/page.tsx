@@ -13,7 +13,7 @@ export default async function AdminPage() {
       <header className="barra">
         <div>
           <p className="eyebrow">DevFest 2026 · Tacna</p>
-          <h1>Entradas Premium</h1>
+          <h1>Entradas Premium y Pro</h1>
         </div>
         <div className="barra-acciones">
           <a href="/admin/exportar" className="secundario">Exportar CSV</a>

@@ -8,7 +8,7 @@ export default function Home() {
       <div className="franja" aria-hidden="true" />
       <p>Sáb 21 de noviembre 2026 · Universidad Tecnológica del Perú (UTP)</p>
       <a className="btn btn-registro" href={REGISTRO_URL}>Regístrate al DevFest Tacna</a>
-      <p className="nota">¿Ya tienes tu entrada Premium? Abre el enlace personal que te enviamos para ver y compartir tu entrada.</p>
+      <p className="nota">¿Ya tienes tu entrada Premium o Pro? Abre el enlace personal que te enviamos para ver y compartir tu entrada.</p>
     </main>
   );
 }

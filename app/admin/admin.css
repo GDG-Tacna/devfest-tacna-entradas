@@ -43,6 +43,7 @@
   white-space: nowrap;
 }
 .primario { min-height: 46px; padding: 0 20px; border: 0; background: var(--ink); color: #fff; }
+.primario-pro { background: #1a56db; }
 .primario:disabled, .peligro:disabled { opacity: 0.6; cursor: progress; }
 .secundario { border: 1.5px solid #e5d9b0; background: #fff; color: var(--ink); }
 .secundario:hover { background: #fff8de; }
@@ -84,6 +85,79 @@
 .form-asistente .ancho { grid-column: 1 / -1; }
 .fila-boton { display: flex; gap: 10px; }
 
+.selector-tipo {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.selector-tipo legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.opciones-tipo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.admin label.opcion-tipo {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #e5d9b0;
+  background: #fffdf5;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+}
+.admin .opcion-tipo input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  pointer-events: none;
+}
+.opcion-tipo:has(input:focus-visible) {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+.opcion-premium.activa {
+  border-color: #d99b00;
+  background: #fef5d3;
+  box-shadow: inset 0 0 0 1px #d99b00;
+}
+.opcion-pro.activa {
+  border-color: var(--blue);
+  background: #e8f0fe;
+  box-shadow: inset 0 0 0 1px var(--blue);
+}
+.opcion-titulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.opcion-desc {
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+.punto {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.punto-premium { background: var(--yellow); border: 1.5px solid #b58300; }
+.punto-pro { background: var(--blue); border: 1.5px solid #185abc; }
+
 .creado {
   display: flex;
   flex-wrap: wrap;
@@ -100,6 +174,29 @@
 .creado a { color: #146c2e; font-size: 0.9rem; overflow-wrap: anywhere; }
 
 .lista-cabecera { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.lista-titulo-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.filtros-tipo { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.chip-filtro {
+  min-height: 32px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1.5px solid #e5d9b0;
+  background: #fffdf5;
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.chip-filtro:hover { background: #fff8de; }
+.chip-filtro.activo {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+.chip-filtro.chip-pro.activo {
+  border-color: #1a56db;
+  background: #1a56db;
+  color: #fff;
+}
 .lista-cabecera input { width: min(320px, 100%); }
 .contador {
   display: inline-block;
@@ -122,15 +219,36 @@
   border-top: 1px solid #f1e8c8;
 }
 .fila img { width: 48px; height: auto; border-radius: 6px; background: #fff5d6; }
+.fila-pro img { background: #e8f0fe; }
 .fila-info { display: grid; gap: 2px; min-width: 0; font-size: 0.88rem; color: var(--ink-2); }
+.fila-nombre { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .fila-info strong { color: var(--ink); font-size: 1rem; }
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.insignia-premium {
+  background: #fef0b8;
+  color: #6e5200;
+  border: 1px solid #ecc954;
+}
+.insignia-pro {
+  background: #e8f0fe;
+  color: #174ea6;
+  border: 1px solid #9ec1f8;
+}
 .fila-info .nota { color: #8a6d00; }
 .fila-info .fecha { font-size: 0.8rem; }
 .fila-acciones { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 .vacio { margin: 8px 0; color: var(--ink-2); }
 
 @media (max-width: 640px) {
-  .form-asistente { grid-template-columns: 1fr; }
+  .form-asistente, .opciones-tipo { grid-template-columns: 1fr; }
   .fila { grid-template-columns: 48px 1fr; }
   .fila-acciones { grid-column: 1 / -1; justify-content: flex-start; }
 }
