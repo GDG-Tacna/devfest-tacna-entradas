@@ -2,17 +2,21 @@ import "server-only";
 import { randomBytes } from "node:crypto";
 import { cache } from "react";
 import { sql } from "@/lib/db";
+import type { TipoEntrada } from "@/lib/evento";
+
+export type { TipoEntrada };
 
 export type Asistente = {
   id: string;
   nombre: string;
+  tipo: TipoEntrada;
   email: string | null;
   telefono: string | null;
   nota: string | null;
   creado_en: string;
 };
 
-export type DatosAsistente = Pick<Asistente, "nombre" | "email" | "telefono" | "nota">;
+export type DatosAsistente = Pick<Asistente, "nombre" | "tipo" | "email" | "telefono" | "nota">;
 
 function slugify(nombre: string) {
   return nombre
@@ -34,16 +38,28 @@ export async function listarAsistentes() {
 }
 
 /** Página de asistentes en orden de registro (el más antiguo primero), para la API pública. */
-export async function paginarAsistentes({ limite, offset, desde }: { limite: number; offset: number; desde: string | null }) {
+export async function paginarAsistentes({
+  limite,
+  offset,
+  desde,
+  tipo,
+}: {
+  limite: number;
+  offset: number;
+  desde: string | null;
+  tipo: TipoEntrada | null;
+}) {
   const [filas, conteo] = await Promise.all([
     sql()`
       SELECT * FROM asistentes
-      WHERE ${desde}::timestamptz IS NULL OR creado_en > ${desde}::timestamptz
+      WHERE (${desde}::timestamptz IS NULL OR creado_en > ${desde}::timestamptz)
+        AND (${tipo}::text IS NULL OR tipo = ${tipo})
       ORDER BY creado_en ASC, id ASC
       LIMIT ${limite} OFFSET ${offset}`,
     sql()`
       SELECT count(*)::int AS total FROM asistentes
-      WHERE ${desde}::timestamptz IS NULL OR creado_en > ${desde}::timestamptz`,
+      WHERE (${desde}::timestamptz IS NULL OR creado_en > ${desde}::timestamptz)
+        AND (${tipo}::text IS NULL OR tipo = ${tipo})`,
   ]);
   return { filas: filas as Asistente[], total: (conteo as { total: number }[])[0].total };
 }
@@ -56,15 +72,15 @@ export const buscarAsistente = cache(async (id: string) => {
 export async function crearAsistente(d: DatosAsistente) {
   const id = nuevoId(d.nombre);
   await sql()`
-    INSERT INTO asistentes (id, nombre, email, telefono, nota)
-    VALUES (${id}, ${d.nombre}, ${d.email}, ${d.telefono}, ${d.nota})`;
+    INSERT INTO asistentes (id, nombre, tipo, email, telefono, nota)
+    VALUES (${id}, ${d.nombre}, ${d.tipo}, ${d.email}, ${d.telefono}, ${d.nota})`;
   return id;
 }
 
 export async function actualizarAsistente(id: string, d: DatosAsistente) {
   await sql()`
     UPDATE asistentes
-    SET nombre = ${d.nombre}, email = ${d.email}, telefono = ${d.telefono}, nota = ${d.nota}
+    SET nombre = ${d.nombre}, tipo = ${d.tipo}, email = ${d.email}, telefono = ${d.telefono}, nota = ${d.nota}
     WHERE id = ${id}`;
 }
 

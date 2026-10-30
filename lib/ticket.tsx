@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import type { TipoEntrada } from "@/lib/evento";
 
 export const TICKET_W = 1024;
 export const TICKET_H = 1536;
@@ -7,16 +8,23 @@ export const TICKET_H = 1536;
 // Caja blanca del nombre en el diseño original (px sobre 1024x1536).
 const NOMBRE_BOX = { left: 96, top: 1010, width: 833, height: 74 };
 
-let assets: Promise<{ base: string; font: Buffer }> | undefined;
+let assets: Promise<{ bases: Record<TipoEntrada, string>; font: Buffer }> | undefined;
 
 export function cargarAssets() {
   assets ??= (async () => {
     const dir = join(process.cwd(), "assets");
-    const [png, font] = await Promise.all([
+    const [pngPremium, pngPro, font] = await Promise.all([
       readFile(join(dir, "ticket-base.png")),
+      readFile(join(dir, "ticket-pro.png")),
       readFile(join(dir, "GoogleSans-Bold.ttf")),
     ]);
-    return { base: `data:image/png;base64,${png.toString("base64")}`, font };
+    return {
+      bases: {
+        premium: `data:image/png;base64,${pngPremium.toString("base64")}`,
+        pro: `data:image/png;base64,${pngPro.toString("base64")}`,
+      },
+      font,
+    };
   })();
   return assets;
 }

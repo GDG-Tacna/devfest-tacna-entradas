@@ -33,9 +33,12 @@ export const noAutorizado = () =>
 
 /** Forma pública de un asistente. La nota de pago es interna y no se expone. */
 export function serializar(a: Asistente) {
+  const tipo = a.tipo ?? "premium";
   return {
     id: a.id,
     nombre: a.nombre,
+    tipo,
+    incluye_certificado: tipo === "pro",
     email: a.email,
     telefono: a.telefono,
     registrado_en: new Date(a.creado_en).toISOString(),

@@ -1,12 +1,12 @@
 # DevFest 2026 Tacna · Entradas
 
-Genera una entrada personalizada (con link propio) por cada asistente de la Experiencia Premium, a partir del diseño del Premium Pass.
+Genera una entrada personalizada (con link propio) por cada asistente de la **Experiencia Premium** o **Experiencia Pro** (incluye certificado).
 
 Producción: https://entradas.gdgtacna.com · Admin: https://entradas.gdgtacna.com/admin
 
 ## Admin
 
-En `/admin` se registra a cada asistente cuando confirma su pago (nombre, y opcionalmente correo, celular y nota de pago). Al guardar se genera su entrada y su link al instante. Desde la lista puedes:
+En `/admin` se registra a cada asistente cuando confirma su pago (eligiendo tipo de entrada **Premium** o **Pro**, nombre, y opcionalmente correo, celular y nota de pago). Al guardar se genera su entrada y su link al instante. Desde la lista puedes:
 
 - **Ver** la entrada, **Copiar** el link o enviarlo por **WhatsApp** (si tiene celular; a los números de 9 dígitos se les agrega +51).
 - **Editar** los datos. El link no cambia aunque corrijas el nombre, y la imagen se actualiza sola.
@@ -59,6 +59,7 @@ Lista a los asistentes en orden de registro (el más antiguo primero).
 | `limite` | 50 | Cuántos devolver (1–200) |
 | `offset` | 0 | Cuántos saltar, para paginar |
 | `desde` | — | Fecha ISO 8601; solo los registrados **después** de ella. Útil para sincronizar solo los nuevos |
+| `tipo` | — | Filtra por tipo de entrada: `premium` o `pro` |
 
 ```bash
 curl -H "Authorization: Bearer $API_KEY" \
@@ -71,6 +72,8 @@ curl -H "Authorization: Bearer $API_KEY" \
     {
       "id": "ana-torres-quispe-a1b2c3",
       "nombre": "Ana Torres Quispe",
+      "tipo": "pro",
+      "incluye_certificado": true,
       "email": null,
       "telefono": null,
       "registrado_en": "2026-10-05T02:43:18.995Z",
@@ -147,5 +150,6 @@ npm run dev                  # http://localhost:3000
 
 ## Archivos del diseño
 
-- `assets/ticket-base.png` — el diseño original con la caja del nombre vacía y fondo transparente.
+- `assets/ticket-base.png` — diseño de la entrada **Premium** (fondo crema) con la caja del nombre vacía y fondo transparente.
+- `assets/ticket-pro.png` — diseño de la entrada **Pro · Certificado** (fondo azul Google suave) con la caja del nombre vacía y fondo transparente.
 - `assets/GoogleSans-Bold.ttf` — Google Sans Bold (solo caracteres latinos) para dibujar el nombre.

@@ -9,9 +9,13 @@ import {
   linkDe,
   type DatosAsistente,
 } from "@/lib/asistentes";
+import { esTipoEntrada, type TipoEntrada } from "@/lib/evento";
 import { cerrarSesion, iniciarSesion, passwordCorrecta, requerirAdmin } from "@/lib/admin-auth";
 
-export type Estado = { error?: string; creado?: { id: string; nombre: string; link: string } } | null;
+export type Estado = {
+  error?: string;
+  creado?: { id: string; nombre: string; tipo: TipoEntrada; link: string };
+} | null;
 
 function leerDatos(form: FormData): DatosAsistente | string {
   const texto = (k: string, max: number) => {
@@ -22,13 +26,16 @@ function leerDatos(form: FormData): DatosAsistente | string {
   if (!nombre || nombre.length < 3) return "Escribe el nombre completo del asistente.";
   if (nombre.length > 60) return "El nombre es muy largo para la entrada (máx. 60 caracteres).";
 
+  const tipoRaw = String(form.get("tipo") ?? "premium").trim().toLowerCase();
+  if (!esTipoEntrada(tipoRaw)) return "Selecciona un tipo de entrada válido.";
+
   const email = texto("email", 120);
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "El correo no parece válido.";
 
   const telefono = texto("telefono", 30);
   if (telefono && !/^\+?[\d\s-]{6,}$/.test(telefono)) return "El teléfono solo puede tener números, espacios o +.";
 
-  return { nombre, email, telefono, nota: texto("nota", 200) };
+  return { nombre, tipo: tipoRaw, email, telefono, nota: texto("nota", 200) };
 }
 
 function revalidarEntrada(id: string) {
@@ -43,7 +50,7 @@ export async function crear(_prev: Estado, form: FormData): Promise<Estado> {
   const id = await crearAsistente(datos);
   revalidarEntrada(id);
   revalidatePath("/admin");
-  return { creado: { id, nombre: datos.nombre, link: linkDe(id) } };
+  return { creado: { id, nombre: datos.nombre, tipo: datos.tipo, link: linkDe(id) } };
 }
 
 export async function editar(id: string, _prev: Estado, form: FormData): Promise<Estado> {

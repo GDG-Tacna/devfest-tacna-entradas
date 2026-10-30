@@ -1,5 +1,6 @@
 import { paginarAsistentes } from "@/lib/asistentes";
 import { autorizado, errorJson, json, noAutorizado, serializar } from "@/lib/api";
+import { esTipoEntrada } from "@/lib/evento";
 
 const LIMITE_DEFECTO = 50;
 const LIMITE_MAX = 200;
@@ -21,7 +22,11 @@ export async function GET(req: Request) {
   if (desde !== null && Number.isNaN(Date.parse(desde)))
     return errorJson(400, "parametro_invalido", "'desde' debe ser una fecha ISO 8601, p. ej. 2026-10-01T00:00:00Z.");
 
-  const { filas, total } = await paginarAsistentes({ limite, offset, desde });
+  const tipoParam = params.get("tipo");
+  if (tipoParam !== null && !esTipoEntrada(tipoParam))
+    return errorJson(400, "parametro_invalido", "'tipo' debe ser 'premium' o 'pro'.");
+
+  const { filas, total } = await paginarAsistentes({ limite, offset, desde, tipo: tipoParam });
   const siguiente = offset + filas.length < total ? offset + filas.length : null;
 
   return json({

@@ -7,12 +7,12 @@ export async function GET() {
   if (!(await esAdmin())) return new Response("No autorizado", { status: 401 });
 
   const filas = (await listarAsistentes()).map((a) =>
-    [a.nombre, a.email, a.telefono, a.nota, a.creado_en ? new Date(a.creado_en).toISOString() : "", linkDe(a.id)]
+    [a.nombre, a.tipo ?? "premium", a.email, a.telefono, a.nota, a.creado_en ? new Date(a.creado_en).toISOString() : "", linkDe(a.id)]
       .map((v) => celda(v))
       .join(","),
   );
   // BOM para que Excel abra bien las tildes.
-  const csv = "﻿" + ["nombre,email,telefono,nota,registrado,link", ...filas].join("\n");
+  const csv = "﻿" + ["nombre,tipo,email,telefono,nota,registrado,link", ...filas].join("\n");
 
   return new Response(csv, {
     headers: {
